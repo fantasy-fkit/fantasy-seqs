@@ -2,9 +2,18 @@ var daggy = require('daggy'),
     combinators = require('fantasy-combinators'),
     tuples = require('fantasy-tuples'),
     Option = require('fantasy-options'),
+    mapObject = require('map-object'),
+    range = require('range'),
 
     constant = combinators.constant,
     identity = combinators.identity,
+    
+    mixin = function (target, source) {
+        mapObject(source, function(_, k) {
+            if (!target.prototype.hasOwnProperty(k)) target.prototype[k] = source[k];
+            else console.warn("Field %o already exist in prototype!", k);
+        });
+    },
 
     Tuple2 = tuples.Tuple2,
     Seq = daggy.taggedSum({
@@ -305,6 +314,9 @@ Seq.SeqT = function(M) {
 
     return SeqT;
 };
+
+// Mixin extended functionality into Seq prototype
+mixin(Seq, range);
 
 // Export
 if(typeof module != 'undefined')
