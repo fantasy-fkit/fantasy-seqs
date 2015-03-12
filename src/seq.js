@@ -1,7 +1,7 @@
 var daggy = require('daggy'),
     combinators = require('fantasy-combinators'),
     tuples = require('fantasy-tuples'),
-    Option = require('fantasy-options'),
+    Option = require('fantasy-options').Option,
     
     constant = combinators.constant,
     identity = combinators.identity,
