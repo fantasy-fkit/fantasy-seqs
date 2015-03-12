@@ -19,9 +19,7 @@
     "daggy": "0.0.x",
     "fantasy-combinators": "0.0.x",
     "fantasy-tuples": "0.0.x",
-    "map-object": "git://github.com/KlimMalgin/map-object.git",
-    "fantasy-options": "git://github.com/fantasy-fkit/fantasy-options.git#v0.1.4",
-    "range": "git://github.com/fantasy-fkit/range.git"
+    "fantasy-options": "git://github.com/fantasy-fkit/fantasy-options.git#v0.1.4"
   },
   "devDependencies": {
     "grunt-cli": "0.1.9",

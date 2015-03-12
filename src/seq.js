@@ -2,18 +2,13 @@ var daggy = require('daggy'),
     combinators = require('fantasy-combinators'),
     tuples = require('fantasy-tuples'),
     Option = require('fantasy-options'),
-    mapObject = require('map-object'),
-    range = require('range'),
-
+    
     constant = combinators.constant,
     identity = combinators.identity,
     
-    mixin = function (target, source) {
-        mapObject(source, function(_, k) {
-            if (!target.prototype.hasOwnProperty(k)) target.prototype[k] = source[k];
-            else console.warn("Field %o already exist in prototype!", k);
-        });
-    },
+    opt = function (val) {
+	    return Option.from(val);
+	},
 
     Tuple2 = tuples.Tuple2,
     Seq = daggy.taggedSum({
@@ -226,6 +221,25 @@ Seq.prototype.toArray = function() {
     });
 };
 
+// Operations
+Seq.prototype.range = function(startO, endO) {
+	return this.chain(function (me) {
+		return Seq.fromArray(me.slice(startO.chain(identity), endO.chain(identity)));
+	});
+};
+Seq.prototype.accumulator = function(f) {
+	return opt(this.chain(function(list) {
+		var ln = list.length,
+	        res = null;
+
+	    for (var i = 0; i<ln; i++) {
+	        if (i == 0) res = f(opt(list[i]), opt(list[i]), opt(i), opt(ln));
+	        else res = f(res, opt(list[i]), opt(i), opt(ln));
+	    }
+	    return res;
+	}));
+};
+
 // Transformer
 Seq.SeqT = function(M) {
     var SeqT = daggy.tagged('run'),
@@ -320,9 +334,6 @@ Seq.SeqT = function(M) {
 
     return SeqT;
 };
-
-// Mixin extended functionality into Seq prototype
-mixin(Seq, range);
 
 // Export
 if(typeof module != 'undefined')
