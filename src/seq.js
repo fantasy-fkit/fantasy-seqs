@@ -223,7 +223,7 @@ Seq.prototype.toArray = function() {
 
 // Operations
 Seq.prototype.range = function(startO, endO) {
-	return this.chain(function (me) {
+	return this.extractInto(function (me) {
 		return Seq.fromArray(me.slice(startO.chain(identity), endO.chain(identity)));
 	});
 };
@@ -239,6 +239,13 @@ Seq.prototype.accumulator = function(f) {
 	    return res;
 	}));
 };
+Seq.prototype.extractInto = function(f) {
+	return this.cata({
+        Cons: f,
+        Nil: identity
+    });
+};
+
 
 // Transformer
 Seq.SeqT = function(M) {
