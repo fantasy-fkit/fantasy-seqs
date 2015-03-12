@@ -28,6 +28,12 @@ Seq.of = function(x) {
 Seq.empty = function() {
     return Seq.Nil;
 };
+Seq.prototype.operation = function (operation) {
+    return (function () {
+        var map = Array.prototype.map;
+        this.map(operation(map.apply(arguments, identity)));
+    }).bind(this);
+};
 Seq.prototype.chain = function(f) {
     return this.fold(
         Seq.Nil,
