@@ -223,12 +223,12 @@ Seq.prototype.toArray = function() {
 
 // Operations
 Seq.prototype.range = function(startO, endO) {
-	return this.extractInto(function (me) {
-		return Seq.fromArray(me.slice(startO.chain(identity), endO.chain(identity)));
+	return this.extractInto(function (list) {
+		return Seq.fromArray(list.slice(startO.chain(identity), endO.chain(identity)));
 	});
 };
 Seq.prototype.accumulator = function(f) {
-	return opt(this.chain(function(list) {
+	return opt(this.extractInto(function(list) {
 		var ln = list.length,
 	        res = null;
 
