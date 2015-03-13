@@ -228,7 +228,7 @@ Seq.prototype.range = function(startO, endO) {
 	});
 };
 Seq.prototype.accumulator = function(f) {
-	return opt(this.extractInto(function(list) {
+	return this.extractInto(function(list) {
 		var ln = list.length,
 	        res = null;
 
@@ -237,7 +237,7 @@ Seq.prototype.accumulator = function(f) {
 	        else res = f(res, opt(list[i]), opt(i), opt(ln));
 	    }
 	    return res;
-	}));
+	});
 };
 Seq.prototype.extractInto = function(f) {
 	return this.cata({
